@@ -43,12 +43,19 @@ Faker::Base.instance_eval do
   end
 end
 
+require 'literate_randomizer'
+
 Faker::Lorem.instance_eval do
   alias :faker_sentence :sentence
+  alias :faker_paragraph :paragraph
 
   NOT_GIVEN = Object.new
 
   def sentence(word_count: 4, supplemental: false, random_words_to_add: 15)
     faker_sentence(word_count: word_count, supplemental: supplemental, random_words_to_add: random_words_to_add)
+  end
+
+  def paragraph(options={})
+    LiterateRandomizer.paragraph(options)
   end
 end
