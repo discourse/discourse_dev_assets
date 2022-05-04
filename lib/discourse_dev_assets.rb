@@ -55,7 +55,7 @@ Faker::Lorem.instance_eval do
     faker_sentence(word_count: word_count, supplemental: supplemental, random_words_to_add: random_words_to_add)
   end
 
-  def paragraph(options={})
+  def paragraph(options = {})
     LiterateRandomizer.paragraph(options)
   end
 end
