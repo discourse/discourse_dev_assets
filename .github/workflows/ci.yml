@@ -11,16 +11,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.7'
+          ruby-version: "3.3"
           bundler-cache: true
 
       - name: Lint
         run: bundle exec rubocop
+
+      - name: syntax_tree
+        if: ${{ !cancelled() }}
+        run: |
+          set -E
+          bundle exec stree check Gemfile $(git ls-files '*.rb') $(git ls-files '*.rake') $(git ls-files '*.thor')
 
   publish:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -28,10 +34,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Release Gem
-        uses: discourse/publish-rubygems-action@v2
+        uses: discourse/publish-rubygems-action@v3
         env:
           RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
           GIT_EMAIL: team@discourse.org
